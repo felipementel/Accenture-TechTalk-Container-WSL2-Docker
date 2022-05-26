@@ -1,0 +1,43 @@
+# docker-compose -f postgres.yml up -d
+# docker-compose -f postgres.yml down
+
+version '3.7'
+
+services
+
+  postgresdb
+    image postgres14.2
+    container_name postgres-felipe
+    restart always
+    ports
+      - 54325432
+    volumes
+      - varlibpostgresqldata
+    environment
+      POSTGRES_USER root
+      POSTGRES_PASSWORD abc1234
+      POSTGRES_DB FelipeDB
+      POSTGRES_INITDB_ARGS --data-checksums
+      PGDATA varlibpostgresqldatapgdata
+    networks
+      - postgres-net
+  
+  pgAdmin
+    image dpagepgadmin46.7
+    container_name pgadmin4-felipe
+    depends_on
+      - postgresdb
+    restart always
+    ports
+      - 809980
+      - 443443
+    environment
+      PGADMIN_DEFAULT_EMAIL felipe@felipementel.dev.br
+      PGADMIN_DEFAULT_PASSWORD abc1234
+      PGADMIN_DISABLE_POSTFIX true
+    networks
+      - postgres-net
+
+networks 
+  postgres-net
+    driver bridge

@@ -1,0 +1,28 @@
+# docker-compose -f redis.yml up -d
+# docker-compose -f redis.yml down --remove-orphans
+
+version: '3.7'
+
+services:
+
+  redisdb:
+    image: redis:6.2.6
+    container_name: redis-felipe
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - /home/felipementel/database/redis:/data
+  
+  redis-commander:
+    image: rediscommander/redis-commander:redis-commander-210
+    container_name: redis-commander
+    restart: always
+    hostname: redis-commander
+    restart: always
+    depends_on:
+      - redisdb
+    environment:
+    - REDIS_HOSTS=local:redis-felipe:6379
+    ports:
+    - "9081:8081"

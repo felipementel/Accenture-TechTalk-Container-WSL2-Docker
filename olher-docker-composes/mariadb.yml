@@ -1,0 +1,32 @@
+# docker-compose -f mariadb.yml up -d
+# docker-compose -f mariadb.yml down --remove-orphans
+
+version: '3.7'
+
+services:
+  mariadb:
+    image: mariadb:10.7.3
+    container_name: mariadb-felipe
+    restart: always
+    volumes:
+      - /mnt/c/_training/container/mariadb:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_USER: felipe-user
+      MARIADB_ROOT_PASSWORD: mariadbpass
+      MARIADB_DATABASE: FelipeMariaDB
+  
+  php:
+    image: phpmyadmin
+    container_name: phpmyadmin-felipe
+    ports:
+      - 8080:80
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: mariadbpass
+
+#user: root
+#pass mariadbpass
+#server mariadb

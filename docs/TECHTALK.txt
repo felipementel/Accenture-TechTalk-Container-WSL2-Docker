@@ -1,0 +1,62 @@
+wsl --list --online
+
+wsl --list
+
+wsl --setdefault Ubuntu-20.04
+wsl --status
+
+lsb_release --help = Linux Standard Base
+lsb_release -a = info da distro
+cat /etc/*-release
+
+pwd
+
+===============
+
+docker run hello-world
+
+
+docker container inspect <container_id>
+docker container logs <container_id>
+
+
+** redis
+docker run --name redisteste -p 6379:6379 redis
+docker exec -it redisteste redis-cli
+**
+
+** nginx (Port Binding)
+
+docker container run --name avanade-nginx nginx
+docker container run -d -p 8013:80 nginx
+docker exec -i -t container_name /bin/bash
+
+cd /usr/share/nginx/html
+
+sed -i -e 's/nginx!/Avanade!/g' index.html
+
+** SonarQube
+
+docker container run --name sq-avanade -p 9044:9000 sonarqube:9.4.0-developer
+
+** MongoDB
+docker container run --name mongodb-avanade --volume /home/felipementel/database/mongodb:/data/db --env MONGO_INITDB_ROOT_USERNAME=root --env MONGO_INITDB_ROOT_PASSWORD=abc1234 --restart always -p 27017:27017 --detach mongo:5.0.6 --wiredTigerCacheSizeGB 1.5
+
+
+** Projeto
+cd /mnt/c/proj/_training/avanade.training.container/env-docker
+
+cd /mnt/c/proj/_training/avanade.training.container/src
+docker build -t felipementel/avanade.training.container:v1 -f ./Avanade.Training.Container.Api/Dockerfile .
+
+docker container run --name felipe-img --rm -d -p 8013:80 -p 8014:443 -e connString=mongodb://root:abc1234@mongodb-avanade:27017/ -e ASPNETCORE_ENVIRONMENT=Development felipementel/avanade.training.container:v1
+
+** Docker push
+
+> docker image tag felipementel/ubuntu-vim-curl-kubectl:v1 felipementel/ubuntu-vim-curl-kubectl:v2
+> docker image push felipementel/ubuntu-vim-curl-kubectl:v2
+
+** Rabbit
+
+docker run -d -p 15672:15672 --hostname myrabbit --name rabbit-my -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management
+
